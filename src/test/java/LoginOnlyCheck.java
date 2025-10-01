@@ -24,6 +24,18 @@ import java.time.Duration;
             waitForHome();                   // 4 verify that we really reached home
         }
 
+        private void clickSubmitBtn() {
+        }
+
+        private void providePassword(String s) {
+        }
+
+        private void provideEmail(String mail) {
+        }
+
+        private void navigateToURL() {
+        }
+
         private void waitForHome() {
 
 

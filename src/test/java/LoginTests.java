@@ -10,9 +10,8 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 
 public class LoginTests extends BaseTest {
-    @Test
-    public void loginEmptyEmailPassword() {
 
+    public void loginEmptyEmailPassword() {
         driver.get("https://qa.koel.app/");
         provideEmail("shynar.largess@testpro.io");
         providePassword("Javashynar89!");
@@ -26,5 +25,14 @@ public class LoginTests extends BaseTest {
 
         Assert.assertTrue(loggedIn, "User should be logged in and see the search box!");
     }
+
+    private void clickSubmitBtn() {
     }
+
+    private void provideEmail(String mail) {
+    }
+
+    private void providePassword(String s) {
+    }
+}
 

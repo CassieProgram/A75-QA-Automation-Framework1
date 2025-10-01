@@ -1,104 +1,119 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
+import java.util.UUID;
 
 public class Homework17Test extends BaseTest {
-
     @Test
-    public void addSongToPlaylist() {
+    public void addSongTOPlaylist() throws InterruptedException {
+        String ExpectedString = "Added 1 song into \"checking.\"";
 
-        /* ---------- 0  Log in ---------- */
-        navigateToURL();
+        //Navigate to the login page
+        navigatetoURL();
+        //loign to the application
         provideEmail("shynar.largess@testpro.io");
         providePassword("Javashynar89!");
         clickSubmitBtn();
-        waitForHome();
-
-        /* ---------- 1  Search ---------- */
+        Thread.sleep(2000);
+        //search for the song
         searchSong("dark");
-        clickViewAllBtn();
+        Thread.sleep(2000);
+        //click view all button
+        clickViewALLBtn();
+        Thread.sleep(2000);
+        //Select the first song
         selectFirstSong();
-
-        /* ---------- 2  Add to playlist ---------- */
+        Thread.sleep(2000);
+        //Click on add to playlist
         clickAddToBtn();
-        String playlist = "checking";                 // <-- your playlist name
-        choosePlaylist(playlist);
-
-        /* ---------- 3  Verify toast ---------- */
-        String toastText = getToastText();
-        String expected  = "Added 1 song into " + playlist;
-        Assert.assertEquals(toastText, expected);
-
-        // ► keep the browser open for eight seconds so you can watch it
-        try { Thread.sleep(8000); } catch (InterruptedException ignored) {}
+        Thread.sleep(2000);
+        //Select the playlist
+        choosePlaylist();
+        Thread.sleep(2000);
+        //Assertion for added to the playlist
+        Assert.assertEquals(getAddToPlaylistSuccessMsg(), ExpectedString);
     }
 
-    /* ---------------------------------------------------------------------- */
-    /*  Helper steps – only the ones that are different from BaseTest appear  */
-    /* ---------------------------------------------------------------------- */
 
-    private void waitForHome() {
-        WebDriverWait w = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // A) login widgets disappear
-        w.until(ExpectedConditions.invisibilityOfElementLocated(
-                By.cssSelector("input[type='email']")));
-
-        // B) either the Search nav link OR the search box becomes visible
-        w.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='Search']")),
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='search']"))
-        ));
-    }
-
-    private void searchSong(String dark) {
-        // open Search view if the box is still hidden
-        if (driver.findElements(By.cssSelector("input[type='search']")).isEmpty()) {
-            driver.findElement(By.xpath("//*[text()='Search']")).click();
-        }
-
-        WebElement box = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector("input[type='search']")));
-        box.clear();
-        box.sendKeys(dark);
-    }
-
-    private void clickViewAllBtn() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//button[normalize-space()='View All']"))).click();
-    }
-
-    private void selectFirstSong() {
-        By firstSong = By.xpath("//section[@id='songResultsWrapper']//li[1]");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(firstSong)).click();
-    }
-
-    private void clickAddToBtn() {
-        // this is the corrected, unique locator the instructor mentioned
-        By addTo = By.xpath("//button[@data-test='add-to-btn']");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(addTo)).click();
-    }
-
-    private void choosePlaylist(String name) {
-        By item = By.xpath("//li[normalize-space()='" + name + "']");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(item)).click();
-    }
-
-    private String getToastText() {
-        By toast = By.cssSelector(".toast");
-        return new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(toast))
-                .getText().trim();
-    }
+public void providePassword(String password) {
+    WebElement passwordField = driver.findElement(By.cssSelector("input[type='password']"));
+    passwordField.clear();
+    passwordField.sendKeys(password);
 }
 
+public void provideEmail(String email) {
+    WebElement emailField = driver.findElement(By.cssSelector("input[type='email']"));
+    emailField.clear();
+    emailField.sendKeys(email);
+}
+
+
+public void navigatetoURL() {
+    url= "https://qa.koel.app/";
+    driver.get(url);
+}
+
+public void clickSubmitBtn() {
+    WebElement submitBtn = driver.findElement(By.cssSelector("button[type='submit']"));
+    submitBtn.click();
+
+}
+
+public void clickProfileIcon(){
+    WebElement avatarIcon = driver.findElement(By.cssSelector("img.avatar"));
+    avatarIcon.click();
+}
+
+public void provideCurrentPassword(String password){
+    WebElement currentpassword= driver.findElement(By.cssSelector("input[name='current_password']"));
+    currentpassword.clear();
+    currentpassword.sendKeys(password);
+}
+public String randomName(){
+    return UUID.randomUUID().toString().replace("-","");
+}
+public void changeName(String randomname){
+    WebElement currentName = driver.findElement(By.cssSelector("[name='name']"));
+    currentName.clear();
+    currentName.sendKeys(randomname);
+}
+public void clickSave(){
+    WebElement clickSave = driver.findElement(By.cssSelector("button.btn-submit"));
+    clickSave.click();
+}
+
+public String getAddToPlaylistSuccessMsg() {
+    WebElement notification = driver.findElement(By.cssSelector("div.success.show"));
+    return  notification.getText();
+
+}
+
+public void choosePlaylist() {
+    WebElement playlist = driver.findElement(By.xpath("//section[@id='songResultsWrapper']//li[contains(text(),'checking')]"));
+    playlist.click();
+}
+
+public void clickAddToBtn() {
+    WebElement addToBtn = driver.findElement(By.xpath("//section[@id='songResultsWrapper']//button[@class='btn-add-to']"));
+    addToBtn.click();
+}
+
+public void selectFirstSong() {
+    WebElement Firstsong = driver.findElement(By.xpath("//section[@id='songResultsWrapper']//tr[@class='song-item'][1]"));
+    Firstsong.click();
+}
+
+public void clickViewALLBtn() {
+    WebElement viewAll = driver.findElement(By.xpath("//button[@data-test='view-all-songs-btn']"));
+    viewAll.click();
+}
+
+public void searchSong(String song) {
+    WebElement searchField = driver.findElement(By.cssSelector("input[type='search']"));
+    searchField.clear();
+    searchField.sendKeys(song);
+}
+}
