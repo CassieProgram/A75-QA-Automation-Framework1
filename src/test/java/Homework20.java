@@ -1,12 +1,13 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.annotations.Ignore;
 
-@Ignore  // disables the whole class in TestNG
+import java.time.Duration;
 
-public class Homework19 extends BaseTest{
+public class Homework20 extends BaseTest{
 
     private Object navigateToURL;
 
@@ -34,7 +35,9 @@ public class Homework19 extends BaseTest{
     public void clickDeletePlaylistBtn() throws InterruptedException {
         WebElement deletePlaylist = driver.findElement(By.cssSelector(".btn-delete-playlist"));
         deletePlaylist.click();
-        Thread.sleep(2000);
+        //Thread.sleep(2000);
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.success.show")));
 
     }
 
@@ -55,3 +58,4 @@ public class Homework19 extends BaseTest{
 
  */
 }
+
