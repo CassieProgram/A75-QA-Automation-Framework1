@@ -28,4 +28,11 @@ public class BasePage {
 public void doubleClick (By locator) {
         actions.doubleClick(findElement(locator)).perform();
 }
+
+public String getPlaylistName (By firstPlaylist) {
+        return findElement(firstPlaylist).getText();
+}
+public void hover (By locator){
+        actions.moveToElement(findElement(locator)).perform();
+}
 }

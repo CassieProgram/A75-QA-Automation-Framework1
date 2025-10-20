@@ -19,10 +19,10 @@ public class LoginPage extends BasePage {
     public void  clickSubmit() {
         findElement(submitBtn).click();
     }
-    public void login () {
-        provideEmail("shynar.largess@tespro.io");
-        providePassword("Javashynar89");
-        clickSubmit();
+   // public void login () {
+      //  provideEmail("shynar.largess@tespro.io");
+        // providePassword("Javashynar89");
+       // clickSubmit();
     }
 
 }
