@@ -1,8 +1,7 @@
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pom.AllSongsPage;
-import pom.HomePage;
-import pom.LoginPage;
+import pagefactory.LoginPage;
+
 
 public class ActionsTest extends  BaseTest {
 

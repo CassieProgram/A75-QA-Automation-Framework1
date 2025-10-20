@@ -6,9 +6,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Ignore;
 
 import java.time.Duration;
-
+@Ignore
 public class BasePage {
     WebDriver driver;
     WebDriverWait wait;
@@ -16,7 +17,7 @@ public class BasePage {
 
     public BasePage(WebDriver givenDriver) {
         driver = givenDriver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5))
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
                 actions = new Actions(driver);
         PageFactory.initElements(driver,this);
     }
@@ -27,6 +28,6 @@ public class BasePage {
     }
 
     public void click (WebElement webElement) { findElement(webElement).click();}
-    public void doubleClick (WebElement webElement) {actions.doubleClick(findElement(webElement))}
-    public void contextClick (WebElement webElement) { actions.contextClick(findElement(webElement))}
+    public void doubleClick (WebElement webElement) {actions.doubleClick(findElement(webElement)).perform();}
+    public void contextClick (WebElement webElement) { actions.contextClick(findElement(webElement)).perform();}
 }

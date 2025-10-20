@@ -10,11 +10,11 @@ import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
 
-    @FindBy(css = "input [type='email']");
+    @FindBy(css = "input [type='email']")
     WebElement emailField;
-    @FindBy ( css = "input[type='password']");
+    @FindBy ( css = "input[type='password']")
     WebElement passwordField;
-    @FindBy (css = "button[type='submit']");
+    @FindBy (css = "button[type='submit']")
     WebElement submitBtn;
     public LoginPage(WebDriver givenDriver) {
         super(givenDriver);
@@ -32,12 +32,8 @@ public class LoginPage extends BasePage {
     public LoginPage  clickSubmit() {
         submitBtn.click();
         return this;
-    }
-    public LoginPage  login() {
-        provideEmail("shynar.largess@tespro.io");
-        providePassword("Javashynar89");
-        clickSubmit();
-        return this;
+
+
     }
 
 }
