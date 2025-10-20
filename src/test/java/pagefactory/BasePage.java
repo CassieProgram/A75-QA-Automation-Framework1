@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Ignore;
 
 import java.time.Duration;
-@Ignore
+
 public class BasePage {
     WebDriver driver;
     WebDriverWait wait;
