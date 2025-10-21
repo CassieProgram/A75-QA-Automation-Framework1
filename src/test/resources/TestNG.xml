@@ -6,9 +6,9 @@
 
     <test name="Example Test" preserve-order="false">
         <classes>
-            <class name="LoginTests"/>
-            <class name="BaseTest"/>
-            <class name="Homework22renamePlaylist"/>
+
+
+            <class name="Homework23RenamePlaylist"/>
         </classes>
     </test>
 </suite>

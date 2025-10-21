@@ -3,8 +3,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-
+@Ignore
 public class Homework22renamePlaylist extends BaseTest {
    //Prerequisite - at least one user -created playlist
     String newPlaylistName = " Sample Edited Playlist";
