@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="TestNG">
+<suite name="Grid-Browser" parallel="tests" thread-count="2">
 <parameter name="BaseURL" value="https://qa.koel.app/"/>
 
-
-    <test name="Example Test" preserve-order="false">
+<parameter name="Browser" value="chrome"/>
+    <test name="Chrome">
         <classes>
             <class name="LoginTests"/>
 
         </classes>
     </test>
+
+        <parameter name="Browser" value="firefox"/>
+<test name="Firefox">
+<classes>
+<class name="LoginTests"/>
+
+</classes>
+        </test>
 </suite>

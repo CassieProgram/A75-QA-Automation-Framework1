@@ -20,9 +20,10 @@ public class BaseTest {
 
 
     @BeforeMethod
-    @Parameters({"BaseURL"})
-    public void launchBrowser(String url) {
-driver = BrowserFactory.createChrome();
+    @Parameters({"BaseURL", "Browser"})
+    public void launchBrowser(String url, String browser) {
+//driver = BrowserFactory.createChrome();
+driver = BrowserFactory.create(browser);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.manage().window().maximize();
