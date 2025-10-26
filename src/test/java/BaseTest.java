@@ -1,9 +1,12 @@
 // package your.package;
 
 import factory.BrowserFactory; // if you have one; else use pickBrowser below
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
@@ -47,6 +50,15 @@ public class BaseTest {
         actions = new Actions(getDriver());
 
         getDriver().get(baseURL);
+        // If a landing page shows first, click "Log in"
+        var links = getDriver().findElements(By.linkText("Log in"));
+        if (!links.isEmpty() && links.get(0).isDisplayed()) {
+            links.get(0).click();
+        }
+
+// Wait for the login form's email field
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
+
     }
 
     @AfterMethod(alwaysRun = true)

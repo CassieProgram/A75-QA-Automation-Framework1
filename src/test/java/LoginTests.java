@@ -11,16 +11,16 @@ public class LoginTests extends BaseTest {
     private final By dashboardMarker = By.cssSelector("[data-test='dashboard'], .dashboard, .user-avatar");
 
     @Test
-    public void loginPositive_correctCreds() {
-        getDriver().findElement(email).sendKeys(System.getProperty("validEmail", System.getenv("TEST_EMAIL")));
-        getDriver().findElement(password).sendKeys(System.getProperty("validPassword", System.getenv("TEST_PASSWORD")));
+    public void loginPositive_correctCreds () {
+        getDriver().findElement(email).sendKeys("shynar@testpro.io");
+        getDriver().findElement(password).sendKeys("Javashynar890@");
         getDriver().findElement(submit).click();
         Assert.assertTrue(getDriver().findElement(dashboardMarker).isDisplayed(), "Dashboard should appear.");
     }
 
     @Test
-    public void loginNegative_wrongPassword() {
-        getDriver().findElement(email).sendKeys(System.getProperty("validEmail", System.getenv("TEST_EMAIL")));
+    public void loginNegative_wrongPassword() throws InterruptedException {
+        getDriver().findElement(email).sendKeys("shynar@testpro.io");
         getDriver().findElement(password).sendKeys("WrongPass!123");
         getDriver().findElement(submit).click();
         String err = getDriver().findElement(errorBanner).getText().toLowerCase();
@@ -29,9 +29,9 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
-    public void loginNegative_wrongEmail() {
+    public void loginNegative_wrongEmail() throws InterruptedException {
         getDriver().findElement(email).sendKeys("nope+" + System.currentTimeMillis() + "@example.com");
-        getDriver().findElement(password).sendKeys(System.getProperty("validPassword", System.getenv("TEST_PASSWORD")));
+        getDriver().findElement(password).sendKeys("Javashynar890@");
         getDriver().findElement(submit).click();
         String err = getDriver().findElement(errorBanner).getText().toLowerCase();
         Assert.assertTrue(err.contains("invalid") || err.contains("not found") || err.contains("unrecognized") || err.contains("wrong"),
