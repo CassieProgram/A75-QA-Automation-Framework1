@@ -2,7 +2,9 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class LoginTests extends BaseTest {
+import static java.sql.DriverManager.getDriver;
+
+public class LoginTests extends BaseTest  {
 
     private final By email = By.id("email");
     private final By password = By.id("password");
