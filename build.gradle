@@ -2,17 +2,24 @@ plugins { id 'java' }
 
 repositories { mavenCentral() }
 
-dependencies {
-    testImplementation 'org.testng:testng:7.9.0'
-    implementation    'org.seleniumhq.selenium:selenium-java:4.23.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
-}
+
+    dependencies {
+        testImplementation 'org.testng:testng:7.6.1'
+        implementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
+        testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.1'
+        //Cucumber
+        implementation 'io.cucumber:cucumber-testng:7.9.0'
+        implementation 'io.cucumber:cucumber-core:7.9.0'
+        implementation 'io.cucumber:cucumber-java:7.9.0'
+        implementation 'io.cucumber:gherkin:25.0.2'
+    }
+
 
 test {
     useTestNG { suites 'src/test/resources/testng.xml' } // optional main suite for local runs
     reports { junitXml.required.set(true); html.required.set(true) }
     systemProperty 'BaseURL', System.getProperty('BaseURL', 'https://qa.koel.app/')
-    systemProperty 'Browser', System.getProperty('Browser', 'chrome')
+    systemProperty 'browser', System.getProperty('browser', 'chrome')
     systemProperty 'target',  System.getProperty('target',  'cloud')
 }
 

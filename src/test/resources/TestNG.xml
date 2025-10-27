@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="HW26" parallel="methods" thread-count="3">
+<suite name="HW27" parallel="methods" thread-count="3">
     <parameter name="BaseURL" value="https://qa.koel.app/"/>
 
     <test name="Cloud_Chrome">
