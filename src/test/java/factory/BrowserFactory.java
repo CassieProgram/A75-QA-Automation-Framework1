@@ -94,8 +94,8 @@ public class BrowserFactory {
         Map<String, Object> lt = new HashMap<>();
         lt.put("user", user);            // do NOT hardcode secrets
         lt.put("accessKey", key);
-        lt.put("project", System.getProperty("project", "HW25"));
-        lt.put("build", System.getProperty("build", "HW25-" + System.currentTimeMillis()));
+        lt.put("project", System.getProperty("project", "HW26"));
+        lt.put("build", System.getProperty("build", "HW26-" + System.currentTimeMillis()));
         lt.put("name", Thread.currentThread().getName());
         lt.put("w3c", true);
         return lt;
