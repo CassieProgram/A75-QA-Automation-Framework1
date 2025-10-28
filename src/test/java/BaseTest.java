@@ -57,7 +57,10 @@ public class BaseTest {
         }
 
 // Wait for the login form's email field
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOfElementLocated(By.id("email")),
+                ExpectedConditions.visibilityOfElementLocated(By.name("email"))
+        ));
 
     }
 
