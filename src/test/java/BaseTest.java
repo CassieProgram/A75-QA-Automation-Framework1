@@ -1,77 +1,132 @@
-// package your.package;
-
-import factory.BrowserFactory; // if you have one; else use pickBrowser below
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-
+import org.testng.annotations.*;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 public class BaseTest {
+    public static WebDriverWait wait = null;
+    public static Actions actions = null;
 
-    private static final ThreadLocal<WebDriver> TL = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
 
-    protected static WebDriver getDriver() { return TL.get(); }
-    private static void setDriver(WebDriver d) { TL.set(d); }
-    private static void unloadDriver() { TL.remove(); }
-
-    protected WebDriverWait wait;
-    protected FluentWait<WebDriver> fluentWait;
-    protected Actions actions;
-
-    @BeforeMethod(alwaysRun = true)
-    @Parameters({"BaseURL","Browser","Target"})
-    public void setupBrowser(String baseURL, String browser, String target) throws Exception {
-        // Let BrowserFactory / pickBrowser know where to run
-        if (target != null && !target.isBlank()) System.setProperty("target", target); // "local" or "cloud"
-
-        // If you built BrowserFactory.create(browser), use that; else call pickBrowser(browser) below
-        WebDriver driver = BrowserFactory.create(browser);
-        // WebDriver driver = pickBrowser(browser); // <- use this if you don’t have BrowserFactory
-
-        setDriver(driver);
-
-        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        getDriver().manage().window().maximize();
-
-        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        fluentWait = new FluentWait<>(getDriver())
-                .withTimeout(Duration.ofSeconds(10))
-                .pollingEvery(Duration.ofSeconds(2));
-        actions = new Actions(getDriver());
-
-        getDriver().get(baseURL);
-        // If a landing page shows first, click "Log in"
-        var links = getDriver().findElements(By.linkText("Log in"));
-        if (!links.isEmpty() && links.get(0).isDisplayed()) {
-            links.get(0).click();
-        }
-
-// Wait for the login form's email field
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
-
+    public static WebDriver getDriver(){
+        return threadDriver.get();
     }
 
-    @AfterMethod(alwaysRun = true)
-    public void teardown(ITestResult result) {
-        try {
-            WebDriver d = getDriver();
-            if (d instanceof JavascriptExecutor js) {
-                js.executeScript("lambda-status=" + (result.isSuccess() ? "passed" : "failed"));
+
+    @BeforeSuite
+    static void setupClass() {
+        static void setupClass() {
+
+            @BeforeMethod
+            @Parameters({"BaseUrl"})
+            public void browserLaunch(String BaseURL) throws MalformedURLException{
+
+                threadDriver.set(pickBrowser(System.getProperty("browser")));
+
+
+                //Preconditions
+                getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+                wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+                getDriver().manage().window().maximize();
+                url = BaseURL;
+                navigatetoURL(url);
+                actions = new Actions(getDriver());
+
             }
-            if (d != null) d.quit();         // quit, not close
-        } finally {
-            unloadDriver();                  // clear ThreadLocal
+            public void setupBrowser(String BaseURL) throws MalformedURLException {
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--remote-allow-origins=*");
+                driver = pickBrowser(System.getProperty("browser"));
+                //Preconditions
+                //driver = new ChromeDriver(options);
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+                wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                driver.manage().window().maximize();
+                url = BaseURL;
+                navigatetoURL(url);
+                actions = new Actions(driver);
+            }
+
+            public void navigatetoURL(String url) {
+                driver.get("https://qa.koel.app/");
+                //driver.get("https://qa.koel.app/");
+                getDriver().get(url);
+            }
+
+            @AfterMethod
+            public void  quitIt(){
+                threadDriver.get().close();
+                threadDriver.remove();
+            }
+
+            public void tearDown() {
+                driver.quit();
+            }
+            public static WebDriver pickBrowser(String browser) throws MalformedURLException
+            WebDriverManager.safaridriver().setup();
+            return driver = new SafariDriver();
+
+            //Grid Capable
+            //Grid Capable
+            case "grid-firefox":
+                caps.setCapability("browserName", "firefox");
+                return driver = new RemoteWebDriver(URI.create(gridUrl).toURL(), caps);
+           public static WebDriver pickBrowser(String browser) throws MalformedURLException
+            caps.setCapability("browserName", "MicrosoftEdge");
+            return driver = new RemoteWebDriver(URI.create(gridUrl).toURL(), caps);
+
+// Cloud Executions
+            case "cloud" :
+                return lambdaTest();
+
+            default:
+            default:
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--remote-allow-origins=*");
+                return driver = new ChromeDriver(chromeOptions);
+
         }
     }
+
+    public static WebDriver lambdaTest() throws MalformedURLException{
+        String hubURL = "https://hub.lambdatest.com/wd/hub";
+        ChromeOptions browserOptions = new ChromeOptions();
+        browserOptions.setPlatformName("Windows 10");
+        browserOptions.setBrowserVersion("dev");
+        HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+        ltOptions.put("username", "wileygriffin");
+        ltOptions.put("accessKey", "LT_iS7htswusuez3M0n6y5KFnTeP4wRoQhyQMksWom2C6XzgfF");
+        ltOptions.put("project", "Untitled");
+        ltOptions.put("w3c", true);
+        ltOptions.put("plugin", "java-testNG");
+        browserOptions.setCapability("LT:Options", ltOptions);
+
+        return new RemoteWebDriver(new URL(hubURL), browserOptions);
+    }
+
+
+  /*  // deletePlaylist homework19
+    public String deletedPlaylistMessage() {
+@@ -140,4 +188,4 @@ public void doubleClick() {
+        actions.doubleClick(existingPlaylist).perform();
+    } */
+}
 }
 

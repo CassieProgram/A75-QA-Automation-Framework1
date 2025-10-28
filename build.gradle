@@ -2,21 +2,30 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+
+
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.testng:testng:7.6.1'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:6.0.1'
-}
+testImplementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
+testImplementation 'org.testng:testng:7.10.2'
+testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+//Cucumber
+testImplementation 'io.cucumber:cucumber-java:7.30.0'
+testImplementation 'io.cucumber:cucumber-core:7.30.0'
+testImplementation 'io.cucumber:cucumber-testng:7.30.0'
+testImplementation 'io.cucumber:gherkin:35.1.0'
+
 
 test {
     useTestNG() {
         suites "src/test/resources/TestNG.xml"
+        suites "src/test/resources/Cucumber.xml"
+        //suites "src/test/resources/TestNG.xml"
+        systemProperty "browser", System.getProperty("browser")
+        //suites "src/test/resources/NewConfig.xml"
     }
 }
