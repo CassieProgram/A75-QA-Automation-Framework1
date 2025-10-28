@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="HW27" parallel="methods" thread-count="3">
-    <parameter name="BaseURL" value="https://qa.koel.app/"/>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-    <test name="Cloud_Chrome">
-        <parameter name="Browser" value="chrome"/>
-        <parameter name="Target" value="cloud"/>
+<suite name="TestNG" parallel="methods" thread-count="2">
+    <parameter name="BaseUrl" value="https://qa.koel.app"/>
+
+    <test name="Example Test" preserve-order="false">
         <classes>
             <class name="LoginTests"/>
+
+            <class name="LoginTests"/>
+            <!-- <class name="homework17"/>
+            <class name="homework17"/>
+            <class name="homework18"/>
+             <class name="Homework19"/>
+             <class name="Homework21"/>
+             <class name="Homework22"/> -->
+
         </classes>
     </test>
 </suite>

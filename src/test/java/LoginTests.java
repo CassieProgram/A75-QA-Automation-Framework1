@@ -1,7 +1,6 @@
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import static java.sql.DriverManager.getDriver;
 
 public class LoginTests extends BaseTest  {
@@ -13,7 +12,7 @@ public class LoginTests extends BaseTest  {
     private final By dashboardMarker = By.cssSelector("[data-test='dashboard'], .dashboard, .user-avatar");
 
     @Test
-    public void loginPositive_correctCreds () {
+    public void loginPositive_correctCreds() throws InterruptedException {
         getDriver().findElement(email).sendKeys("shynar@testpro.io");
         getDriver().findElement(password).sendKeys("Javashynar890@");
         getDriver().findElement(submit).click();
