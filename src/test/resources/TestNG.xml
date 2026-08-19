@@ -6,7 +6,26 @@
     <test name="Example Test" preserve-order="false">
         <classes>
             <class name="LoginTests"/>
+<<<<<<< Updated upstream
             <class name="BaseTest"/>
+=======
+        </classes>
+    </test>
+
+
+    <test name="Unlike_Multiple_Songs_API">
+        <classes>
+            <class name="apiTests.UnlikeMultipleSongsTest"/>
+>>>>>>> Stashed changes
+        </classes>
+    </test>
+
+    <test name="Update_Password_Desktop">
+        <parameter name="Browser" value="chrome"/>
+        <parameter name="Target" value="desktop"/>
+
+        <classes>
+            <class name="UpdatePasswordTest"/>
         </classes>
     </test>
 </suite>
