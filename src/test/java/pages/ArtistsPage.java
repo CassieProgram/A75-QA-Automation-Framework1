@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,9 +19,18 @@ public class ArtistsPage {
             By.cssSelector("a[href='#!/artists']");
     private final By heading =
             By.xpath("//h1[normalize-space()='Artists']");
-
     private final By artistNames =
             By.cssSelector("a.name[href^='#!/artist/']");
+
+    private final By searchInput =
+            By.cssSelector("#searchForm input[type='search'][name='q']");
+    private final By searchResultsHeading =
+            By.xpath("//h1[contains(normalize-space(.), 'Search Results for')]");
+    private final By searchResultGroups =
+            By.cssSelector(
+                    "section[data-testid='song-excerpts'], " +
+                            "section[data-testid='artist-excerpts']"
+            );
 
     public ArtistsPage(WebDriver driver) {
         this.driver = driver;
@@ -28,8 +38,7 @@ public class ArtistsPage {
     }
 
     public void open() {
-        wait.until(ExpectedConditions.elementToBeClickable(artistsLink))
-                .click();
+        wait.until(ExpectedConditions.elementToBeClickable(artistsLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(heading));
     }
 
@@ -53,5 +62,33 @@ public class ArtistsPage {
 
             return names.size() >= 2 ? names : null;
         });
+    }
+
+    public void searchForArtist(String artistName) {
+        WebElement field =
+                wait.until(ExpectedConditions.visibilityOfElementLocated(searchInput));
+        field.clear();
+        field.sendKeys(artistName);
+
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(
+                searchResultsHeading, artistName));
+    }
+
+    public boolean isArtistNameShownInSearchResults(String artistName) {
+        try {
+            return wait.until(d -> {
+                for (WebElement group : d.findElements(searchResultGroups)) {
+                    if (group.isDisplayed()
+                            && group.getText().lines()
+                            .map(String::trim)
+                            .anyMatch(artistName::equals)) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }

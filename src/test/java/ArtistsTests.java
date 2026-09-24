@@ -5,7 +5,7 @@ import pages.LoginPage;
 
 import java.util.List;
 
-public class  ArtistsTests extends BaseTest {
+public class ArtistsTests extends BaseTest {
 
     @Test
     public void tc001ArtistsAreDisplayed() {
@@ -37,6 +37,26 @@ public class  ArtistsTests extends BaseTest {
         Assert.assertTrue(
                 names.contains("BoxCat Games"),
                 "BoxCat Games should be visible"
+        );
+    }
+
+    @Test
+    public void tc002SearchResultsShowMatchingArtistName() {
+        String artistName = "BoxCat Games";
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.login(
+                requiredEnv("KOEL_EMAIL"),
+                requiredEnv("KOEL_PASSWORD")
+        );
+
+        ArtistsPage artistsPage = new ArtistsPage(driver);
+        artistsPage.open();
+        artistsPage.searchForArtist(artistName);
+
+        Assert.assertTrue(
+                artistsPage.isArtistNameShownInSearchResults(artistName),
+                "Search results should display the artist name: " + artistName
         );
     }
 }
