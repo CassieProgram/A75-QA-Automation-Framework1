@@ -5,22 +5,12 @@
     <test name="Login">
         <classes>
             <class name="LoginTests"/>
-<<<<<<< Updated upstream
-            <class name="BaseTest"/>
-=======
-        </classes>
-    </test>
-
-    <test name="Create Playlist">
-        <classes>
-            <class name="CreatePlaylistTest"/>
         </classes>
     </test>
 
     <test name="Artists">
         <classes>
             <class name="ArtistsTests"/>
->>>>>>> Stashed changes
         </classes>
     </test>
 </suite>
