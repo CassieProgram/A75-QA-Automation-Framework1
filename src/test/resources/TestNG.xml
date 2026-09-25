@@ -13,4 +13,9 @@
             <class name="ArtistsTests"/>
         </classes>
     </test>
+    <test name="Smart Playlists">
+        <classes>
+            <class name="SmartPlaylistTests"/>
+        </classes>
+    </test>
 </suite>
